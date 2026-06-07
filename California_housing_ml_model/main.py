@@ -54,5 +54,4 @@ full_pipeline = ColumnTransformer([
 
 # transform the data
 housing_prepared = full_pipeline.fit_transform(housing)
-housing = pd.DataFrame(housing_prepared, columns = housing.columns, index = housing.index)
 print(housing_prepared)
