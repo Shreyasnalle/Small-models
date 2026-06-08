@@ -6,6 +6,10 @@ from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 import numpy as np
 import pandas as pd
+from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import root_mean_squared_error
 
 # load the database
 housing = pd.read_csv("housing.csv")
@@ -55,3 +59,24 @@ full_pipeline = ColumnTransformer([
 # transform the data
 housing_prepared = full_pipeline.fit_transform(housing)
 print(housing_prepared)
+
+# train the model -> linear regression model
+lin_reg = LinearRegression()
+lin_reg.fit(housing_prepared, housing_labels)
+lin_preds = lin_reg.predict(housing_prepared)
+lin_rmse = root_mean_squared_error(housing_labels, lin_preds)
+print(f"The RMSE value of the Linear Regression model is {lin_rmse}")
+
+# decision tree model
+dec_reg = DecisionTreeRegressor()
+dec_reg.fit(housing_prepared, housing_labels)
+dec_preds = dec_reg.predict(housing_prepared)
+dec_rmse = root_mean_squared_error(housing_labels, dec_preds)
+print(f"The RMSE value fo the Decision Tree Regression model is {dec_rmse}")
+
+# random forest classifier model
+random_forest_reg = RandomForestRegressor()
+random_forest_reg.fit(housing_prepared, housing_labels)
+random_forest_preds = random_forest_reg.predict(housing_prepared)
+random_forest_rmse = root_mean_squared_error(housing_labels, random_forest_preds)
+print(f"The RMSE value of the Random Forest Regression model is {random_forest_rmse}")
