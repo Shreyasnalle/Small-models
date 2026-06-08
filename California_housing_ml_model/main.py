@@ -10,6 +10,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import root_mean_squared_error
+from sklearn.model_selection import cross_val_score
 
 # load the database
 housing = pd.read_csv("housing.csv")
@@ -71,8 +72,12 @@ print(f"The RMSE value of the Linear Regression model is {lin_rmse}")
 dec_reg = DecisionTreeRegressor()
 dec_reg.fit(housing_prepared, housing_labels)
 dec_preds = dec_reg.predict(housing_prepared)
-dec_rmse = root_mean_squared_error(housing_labels, dec_preds)
-print(f"The RMSE value fo the Decision Tree Regression model is {dec_rmse}")
+#dec_rmse = root_mean_squared_error(housing_labels, dec_preds)
+dec_rmses = -cross_val_score(dec_reg, housing_prepared, housing_labels,scoring = "neg_root_mean_squared_error", cv = 10)
+#print(f"The RMSE value fo the Decision Tree Regression model is {dec_rmse}")
+print(dec_rmses)
+print(pd.Series(dec_rmses, name = "Indiviual rmse value"))
+print(pd.Series(dec_rmses).describe())
 
 # random forest classifier model
 random_forest_reg = RandomForestRegressor()
